@@ -77,19 +77,22 @@
 
 <p>Locate and extract almost any URL within a string. Handles protocol-less domains, IPv4 and IPv6, unrecognised TLDs, and more.</p>
 
-              <textarea class="form-control" name="text" id="text" rows="10" style="display:block;width:100%;">Domain with a recognized TLD: domain.com
-Domain inside a word (should not be linked): domain.common
-Recognized sub-domain with an unrecognised TLD: www.domain.unrecognised
-Recognized protocol with an unrecognised TLD: http://domain.unrecognised
+              <textarea class="form-control" name="text" id="text" rows="10" style="display:block;width:100%;">Recognized TLD: domain.com
+Recognized sub-domain: www.domain.unrecognised
+Recognized protocol: http://domain.unrecognised
+With a path: domain.unrecognised/
 IPv4: 8.8.8.8
 IPv6: 2001:4860:4860::8888
-Domain with a path: domain.com/path/to/resource.html
-Domain with a query string: domain.com/?testing
-URLs at the end of a question (should not include the ? in the URL): domain.com? domain.com/path/to/resource? domain.com/path/to/resource?variable?
-URLs at the end of a statement (should not include the . in the URL): domain.com. domain.com/path/to/resource. domain.com/path/to/resource?variable.
-URLs surrounded by (): (domain.com) (domain.com/path/to/resource) (domain.com/path(to)resource)
-URLs surrounded by []: [domain.com] [domain.com/path/to/resource] [domain.com/path/to/resource?variable]
-URLs surrounded by &lt;&gt;: &lt;domain.com&gt; &lt;domain.com/path/to/resource&gt; &lt;domain.com/path/to/resource?variable&gt;</textarea>
+With a query string: domain.com/?testing
+Hashtags: domain.com/#123
+At the end of a sentence: domain.com. domain.com/path/to/resource! domain.com/path/to/resource?variable? domain.com/path/to/resource#hash?
+Hashbang: domain.com/#!path
+Surrounded by (): (domain.com) (domain.com/path/to/resource) 
+Including (): (domain.com/path(to)resource)
+Surrounded by []: [domain.com] [domain.com/path/to/resource?variable]
+URLs surrounded by &lt;&gt;: &lt;domain.com&gt; &lt;domain.com/path/to/resource?variable&gt;
+
+Domain inside a word (should not be linked): domain.common</textarea>
 
             <div id="html-preview">
               <h3>Preview Results Here</h3>
