@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="robots" content="noindex">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+		<title>LinkParser Test</title>
+
+		<!-- Latest compiled and minified CSS -->
+		<link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+
+		<!-- Optional theme -->
+		<link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css">
+
+		<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+		<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+		<!--[if lt IE 9]>
+		<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+		<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+		<![endif]-->
+
+		<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+
+		<!-- Latest compiled and minified JavaScript -->
+		<script src="https://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+
+		<script src="LinkParser.js"></script>
+		<script>
+			$(document).ready(function() {
+				var timeout1 = null;
+				var timeout2 = null;
+				$('#text').on('keyup',testParser);
+				testParser();
+			});
+
+			function testParser() {
+				$('#html-preview .content').empty();
+				var links = LinkParser.parse($('#text').val());
+				var html = outputHtml($('#text').val(),links);
+				$('#html-preview .content').html(html.replace(/\n/g,'<br />\n'));
+			}
+
+			function outputHtml(text,links) {
+				var html = '';
+				var pos = 0;
+				for (var t=0; t<links.length; t++) {
+					// add the part before the next link
+					var before = text.substr(pos,links[t].pos-pos);
+					html += $('<span>',{'data-link':t,'text':before}).html();
+					// add the next link
+					var middle = text.substr(links[t].pos,links[t].len);
+					html += $('<a>',{'href':links[t].url,'target':'_blank','text':middle}).prop('outerHTML');
+					// move the position up to the end of this link
+					pos = links[t].pos+links[t].len;
+				}
+				// add the part after the last link
+				html += $('<span>',{'data-link':'last','text':text.substr(pos)}).html();
+
+				return html;
+			}
+
+		</script>
+
+	</head>
+	<body>
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12">
+					<h1>LinkParser Test Page</h1>
+					<form role="form" method="POST" action="" onsubmit="return false;">
+
+						<div class="form-group">
+							<label for="text">Enter text here</label>
+							<textarea class="form-control" name="text" id="text" rows="10">Domain with a recognized TLD: domain.com
+Domain inside a word (should not be linked): domain.common
+Recognized sub-domain with an unrecognised TLD: www.domain.unrecognised
+Recognized protocol with an unrecognised TLD: http://domain.unrecognised
+IPv4: 8.8.8.8
+IPv6: 2001:4860:4860::8888
+Domain with a path: domain.com/path/to/resource.html
+Domain with a query string: domain.com/?testing
+URLs at the end of a question (should not include the ? in the URL): domain.com? domain.com/path/to/resource? domain.com/path/to/resource?variable?
+URLs at the end of a statement (should not include the . in the URL): domain.com. domain.com/path/to/resource. domain.com/path/to/resource?variable.
+URLs surrounded by (): (domain.com) (domain.com/path/to/resource) (domain.com/path(to)resource)
+URLs surrounded by []: [domain.com] [domain.com/path/to/resource] [domain.com/path/to/resource?variable]
+URLs surrounded by &lt;&gt;: &lt;domain.com&gt; &lt;domain.com/path/to/resource&gt; &lt;domain.com/path/to/resource?variable&gt;</textarea>
+						</div>
+
+						<div id="html-preview">
+							<h3>Preview Results Here</h3>
+							<div class="content"></div>
+						</div>
+
+					</form>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>
